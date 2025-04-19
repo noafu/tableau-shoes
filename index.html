@@ -112,9 +112,10 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.9);
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
         }
 
         .fallback-message a {
@@ -184,6 +185,7 @@
             .tableau-section h2 { font-size: 1.5rem; }
             .navbar ul { flex-direction: column; align-items: center; }
             .tableau-iframe { height: 400px; }
+            .fallback-message { max-width: 90%; padding: 1rem; }
         }
     </style>
 </head>
@@ -209,7 +211,8 @@
             <iframe class="tableau-iframe" src="https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:showVizHome=no&:embed=true"></iframe>
             <div class="fallback-message">
                 <p>Oops! The Tableau visualization failed to load. 😔</p>
-                <p>View it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1" target="_blank">Tableau Public</a> or try refreshing the page.</p>
+                <p>View it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1" target="_blank">Tableau Public</a>.</p>
+                <p>Try hosting on <a href="https://vercel.com" target="_blank">Vercel</a> or <a href="https://netlify.com" target="_blank">Netlify</a> for better compatibility.</p>
             </div>
         </div>
     </section>
@@ -242,7 +245,7 @@
         iframe.addEventListener('load', () => {
             try {
                 const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                if (!iframeDoc || iframeDoc.body.innerHTML === '') {
+                if (!iframeDoc || !iframeDoc.body || iframeDoc.body.innerHTML === '') {
                     console.warn('Iframe loaded but content is empty.');
                     iframe.style.display = 'none';
                     fallbackMessage.style.display = 'block';
@@ -250,7 +253,7 @@
                     console.log('Iframe loaded successfully.');
                 }
             } catch (error) {
-                console.error('Error accessing iframe content:', error);
+                console.error('Error accessing iframe content (likely CORS or CSP issue):', error);
                 iframe.style.display = 'none';
                 fallbackMessage.style.display = 'block';
             }
@@ -263,14 +266,14 @@
             fallbackMessage.style.display = 'block';
         });
 
-        // Timeout to check if iframe loads within 10 seconds
+        // Timeout to check if iframe loads within 8 seconds
         setTimeout(() => {
             if (!iframe.contentWindow || !iframe.contentWindow.document.body) {
-                console.warn('Iframe did not load within 10 seconds.');
+                console.warn('Iframe did not load within 8 seconds.');
                 iframe.style.display = 'none';
                 fallbackMessage.style.display = 'block';
             }
-        }, 10000);
+        }, 8000);
 
         // Smooth scroll for navigation
         document.querySelectorAll('.navbar a').forEach(anchor => {
