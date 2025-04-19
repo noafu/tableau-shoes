@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analytics Dashboard 📊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #6e8efb;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            margin: 2rem;
+            border-radius: 15px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .tableau-section {
+            padding: 2rem;
+            background: #fff;
+            margin: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .tableau-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .tableau-embed {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            min-height: 600px;
+        }
+
+        #tableau-viz {
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #tableau-viz:hover {
+            transform: scale(1.02);
+        }
+
+        .fallback-message {
+            text-align: center;
+            color: #555;
+            display: none;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            margin: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 15px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            color: #555;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .tableau-section h2 { font-size: 1.5rem; }
+            .navbar ul { flex-direction: column; align-items: center; }
+            #tableau-viz { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home">Home 🏠</a></li>
+            <li><a href="#dashboard">Dashboard 📈</a></li>
+            <li><a href="#features">Features 🌟</a></li>
+            <li><a href="#contact">Contact 📬</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>Welcome to Our Data Analytics Hub 🚀</h1>
+        <p>Explore powerful insights and visualizations with our Tableau-powered dashboard! 📊</p>
+    </section>
+
+    <section id="dashboard" class="tableau-section">
+        <h2>Interactive Tableau Dashboard 🎉</h2>
+        <p style="text-align: center; color: #555;">Dive into our data with this dynamic visualization powered by Tableau! ✨</p>
+        <div class="tableau-embed">
+            <div id="tableau-viz"></div>
+        </div>
+        <p class="fallback-message">Unable to load the Tableau visualization. Please ensure JavaScript is enabled or view it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1">Tableau Public</a>. 😔</p>
+    </section>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <h3>Real-Time Insights ⏰</h3>
+            <p>Get up-to-date analytics to make informed decisions quickly! 🚀</p>
+        </div>
+        <div class="feature-card">
+            <h3>Interactive Visuals 📊</h3>
+            <p>Engage with dynamic charts and graphs for deeper understanding! 🌈</p>
+        </div>
+        <div class="feature-card">
+            <h3>Easy Sharing 🤝</h3>
+            <p>Share your insights with your team effortlessly! 📬</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>© 2025 Data Analytics Hub. All rights reserved. Let's make data fun! 😎</p>
+    </footer>
+
+    <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+    <script>
+        // Initialize Tableau viz using JavaScript API
+        function initViz() {
+            const vizUrl = 'https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:language=en-US&:embed=true&:display_count=n&:origin=viz_share_link';
+            const vizContainer = document.getElementById('tableau-viz');
+            const options = {
+                width: '1000px',
+                height: '600px',
+                hideTabs: true,
+                hideToolbar: true,
+                onFirstInteractive: () => {
+                    console.log('Tableau viz loaded successfully!');
+                }
+            };
+
+            try {
+                new tableau.Viz(vizContainer, vizUrl, options);
+            } catch (error) {
+                console.error('Error loading Tableau viz:', error);
+                document.querySelector('.fallback-message').style.display = 'block';
+            }
+        }
+
+        // Load viz when page is ready
+        document.addEventListener('DOMContentLoaded', initViz);
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.navbar a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animate elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card, .tableau-section, .hero').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
