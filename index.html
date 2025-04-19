@@ -118,6 +118,12 @@
             max-width: 80%;
         }
 
+        .fallback-message img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
         .fallback-message a {
             color: #6e8efb;
             text-decoration: none;
@@ -210,9 +216,10 @@
         <div class="tableau-embed">
             <iframe class="tableau-iframe" src="https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:showVizHome=no&:embed=true"></iframe>
             <div class="fallback-message">
-                <p>Oops! The Tableau visualization failed to load. 😔</p>
-                <p>View it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1" target="_blank">Tableau Public</a>.</p>
-                <p>Try hosting on <a href="https://vercel.com" target="_blank">Vercel</a> or <a href="https://netlify.com" target="_blank">Netlify</a> for better compatibility.</p>
+                <!-- Add a screenshot here if available, e.g., <img src="path/to/dashboard-screenshot.png" alt="Dashboard Preview"> -->
+                <p>Oops! The Tableau visualization failed to load, likely due to GitHub Pages restrictions. 😔</p>
+                <p>View it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" target="_blank">Tableau Public</a>.</p>
+                <p>For a reliable display, host this site on <a href="https://vercel.com" target="_blank">Vercel</a> or <a href="https://netlify.com" target="_blank">Netlify</a>.</p>
             </div>
         </div>
     </section>
@@ -220,7 +227,7 @@
     <section id="features" class="features">
         <div class="feature-card">
             <h3>Real-Time Insights ⏰</h3>
-            <p>Get up-to-date analytics to make informed decisions quickly! 🚀</p>
+            <p:Get up-to-date analytics to make informed decisions quickly! 🚀</p>
         </div>
         <div class="feature-card">
             <h3>Interactive Visuals 📊</h3>
@@ -246,64 +253,4 @@
             try {
                 const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
                 if (!iframeDoc || !iframeDoc.body || iframeDoc.body.innerHTML === '') {
-                    console.warn('Iframe loaded but content is empty.');
-                    iframe.style.display = 'none';
-                    fallbackMessage.style.display = 'block';
-                } else {
-                    console.log('Iframe loaded successfully.');
-                }
-            } catch (error) {
-                console.error('Error accessing iframe content (likely CORS or CSP issue):', error);
-                iframe.style.display = 'none';
-                fallbackMessage.style.display = 'block';
-            }
-        });
-
-        // Handle iframe errors
-        iframe.addEventListener('error', () => {
-            console.error('Iframe failed to load Tableau viz.');
-            iframe.style.display = 'none';
-            fallbackMessage.style.display = 'block';
-        });
-
-        // Timeout to check if iframe loads within 8 seconds
-        setTimeout(() => {
-            if (!iframe.contentWindow || !iframe.contentWindow.document.body) {
-                console.warn('Iframe did not load within 8 seconds.');
-                iframe.style.display = 'none';
-                fallbackMessage.style.display = 'block';
-            }
-        }, 8000);
-
-        // Smooth scroll for navigation
-        document.querySelectorAll('.navbar a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                window.scrollTo({
-                    top: targetSection.offsetTop - 70,
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Animate elements on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.feature-card, .tableau-section, .hero').forEach(el => {
-            el.style.opacity = 0;
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(el);
-        });
-    </script>
-</body>
-</html>
+                    console.warn
