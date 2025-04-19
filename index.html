@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://public.tableau.com; frame-src https://public.tableau.com; connect-src https://public.tableau.com; style-src 'self' 'unsafe-inline';">
     <title>Data Analytics Dashboard 📊</title>
     <style>
         * {
@@ -86,6 +87,7 @@
             justify-content: center;
             margin: 2rem 0;
             min-height: 600px;
+            position: relative;
         }
 
         #tableau-viz {
@@ -101,10 +103,24 @@
             transform: scale(1.02);
         }
 
+        .fallback-iframe {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .fallback-message {
             text-align: center;
             color: #555;
             display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .features {
@@ -163,7 +179,7 @@
             .hero h1 { font-size: 2rem; }
             .tableau-section h2 { font-size: 1.5rem; }
             .navbar ul { flex-direction: column; align-items: center; }
-            #tableau-viz { height: 400px; }
+            #tableau-viz, .fallback-iframe { height: 400px; }
         }
     </style>
 </head>
@@ -187,8 +203,9 @@
         <p style="text-align: center; color: #555;">Dive into our data with this dynamic visualization powered by Tableau! ✨</p>
         <div class="tableau-embed">
             <div id="tableau-viz"></div>
+            <iframe class="fallback-iframe" src="https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:showVizHome=no&:embed=true"></iframe>
+            <p class="fallback-message">Unable to load the Tableau visualization. Please ensure JavaScript is enabled or view it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1">Tableau Public</a>. 😔</p>
         </div>
-        <p class="fallback-message">Unable to load the Tableau visualization. Please ensure JavaScript is enabled or view it directly on <a href="https://public.tableau.com/views/Book1_17450715154710/Dashboard1">Tableau Public</a>. 😔</p>
     </section>
 
     <section id="features" class="features">
@@ -214,28 +231,55 @@
     <script>
         // Initialize Tableau viz using JavaScript API
         function initViz() {
-            const vizUrl = 'https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:language=en-US&:embed=true&:display_count=n&:origin=viz_share_link';
+            const vizUrl = 'https://public.tableau.com/views/Book1_17450715154710/Dashboard1?:showVizHome=no&:embed=true';
             const vizContainer = document.getElementById('tableau-viz');
+            const fallbackIframe = document.querySelector('.fallback-iframe');
+            const fallbackMessage = document.querySelector('.fallback-message');
+
             const options = {
                 width: '1000px',
                 height: '600px',
                 hideTabs: true,
                 hideToolbar: true,
                 onFirstInteractive: () => {
-                    console.log('Tableau viz loaded successfully!');
+                    console.log('Tableau viz loaded successfully via JavaScript API!');
+                    fallbackIframe.style.display = 'none';
+                    fallbackMessage.style.display = 'none';
+                },
+                onFirstVizSizeKnown: () => {
+                    console.log('Tableau viz size determined.');
                 }
             };
 
             try {
-                new tableau.Viz(vizContainer, vizUrl, options);
+                const viz = new tableau.Viz(vizContainer, vizUrl, options);
+
+                // Check if viz loads within 10 seconds
+                setTimeout(() => {
+                    if (!vizContainer.querySelector('iframe')) {
+                        console.warn('Tableau JavaScript API failed to load viz. Switching to iframe fallback.');
+                        vizContainer.style.display = 'none';
+                        fallbackIframe.style.display = 'block';
+                    }
+                }, 10000);
             } catch (error) {
-                console.error('Error loading Tableau viz:', error);
-                document.querySelector('.fallback-message').style.display = 'block';
+                console.error('Error loading Tableau viz via JavaScript API:', error);
+                vizContainer.style.display = 'none';
+                fallbackIframe.style.display = 'block';
             }
         }
 
         // Load viz when page is ready
         document.addEventListener('DOMContentLoaded', initViz);
+
+        // Fallback iframe error handling
+        const fallbackIframe = document.querySelector('.fallback-iframe');
+        fallbackIframe.addEventListener('error', () => {
+            console.error('Iframe fallback failed to load Tableau viz.');
+            document.getElementById('tableau-viz').style.display = 'none';
+            fallbackIframe.style.display = 'none';
+            document.querySelector('.fallback-message').style.display = 'block';
+        });
 
         // Smooth scroll for navigation
         document.querySelectorAll('.navbar a').forEach(anchor => {
